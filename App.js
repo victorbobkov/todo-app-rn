@@ -3,30 +3,38 @@ import TaskItem from './components/TaskItem'
 import TaskInput from './components/TaskInput'
 import {
    StyleSheet,
-   Button,
-   Text,
-   TextInput,
    View,
-   ScrollView,
    FlatList
 } from 'react-native'
 
 export default function App() {
-
    const [tasks, setTasks] = useState([])
-   
+
    const addTaskHandler = (taskTitle) => {
       setTasks(currentTasks => [
          ...currentTasks,
-         {key: Math.random().toString(), value: taskTitle}])
+         {id: Math.random().toString(), value: taskTitle}])
+   }
+
+   const removeTaskHandler = (taskId) => {
+     setTasks(currentTasks => {
+        return currentTasks.filter((task) => task.id !== taskId)
+     })
    }
 
    return (
       <View style={styles.screen}>
-         <TaskInput onAddTask={addTaskHandler} />
+         <TaskInput onAddTask={addTaskHandler}/>
          <FlatList
+            keyExtractor={(item, index) => item.id}
             data={tasks}
-            renderItem={itemData => <TaskItem title={itemData.item.value} />}
+            renderItem={itemData => (
+               <TaskItem
+                  id={itemData.item.id}
+                  onDelete={removeTaskHandler}
+                  title={itemData.item.value}
+               />
+            )}
          />
       </View>
    )

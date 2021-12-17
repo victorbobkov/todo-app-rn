@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {StyleSheet, Button, TextInput, View} from 'react-native'
 
-const TaskInput = (props) => {
+const TaskInput = ({onAddTask}) => {
    const [enteredTask, setEnteredTask] = useState('')
 
    const taskInputHandler = (enteredText) => {
@@ -16,7 +16,7 @@ const TaskInput = (props) => {
             onChangeText={taskInputHandler}
             value={enteredTask}
          />
-         <Button title="ADD" onPress={props.onAddTask.bind(this, enteredTask)}/>
+         <Button title="ADD" onPress={onAddTask.bind(this, enteredTask)}/>
       </View>
    )
 }
