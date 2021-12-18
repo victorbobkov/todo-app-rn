@@ -4,16 +4,19 @@ import TaskInput from './components/TaskInput'
 import {
    StyleSheet,
    View,
+   Button,
    FlatList
 } from 'react-native'
 
 export default function App() {
    const [tasks, setTasks] = useState([])
+   const [isAddMode, setIsAddMode] = useState(false)
 
    const addTaskHandler = (taskTitle) => {
       setTasks(currentTasks => [
          ...currentTasks,
          {id: Math.random().toString(), value: taskTitle}])
+      setIsAddMode(false)
    }
 
    const removeTaskHandler = (taskId) => {
@@ -22,9 +25,21 @@ export default function App() {
      })
    }
 
+   const cancelTaskAdditionHandler = () => {
+     setIsAddMode(false)
+   }
+
    return (
       <View style={styles.screen}>
-         <TaskInput onAddTask={addTaskHandler}/>
+         <Button
+            title='Добавить новую задачу'
+            onPress={() => setIsAddMode(true)}
+         />
+         <TaskInput
+            visible={isAddMode}
+            onAddTask={addTaskHandler}
+            onCancel={cancelTaskAdditionHandler}
+         />
          <FlatList
             keyExtractor={(item, index) => item.id}
             data={tasks}
